@@ -5,61 +5,72 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <title>To-Do-App</title>
 
+  <style>
+  </style>
+
   <script>
+
+    function handleClick(cb) {
+      cb.checked = !cb.checked;
+      // display("Clicked, new value = " + cb.checked);
+    }
+
     function loader() {
-      //alert('ok');
 
-      //obj = { taskList: [] };
+      idCount = 0;
+      obj = { taskList: [] };
       retrievedObject = localStorage.getItem('obj');
-
       something = JSON.parse(retrievedObject);
-      //console.log('retrievedObject: ', JSON.parse(something.taskList[0].task));
-      for (j = 0; j < something.taskList.length; j++) {
-        document.getElementById("tasks").innerHTML += `<span><input type="checkbox" name="chk"> ${something.taskList[j].task}<br/></span>`;
-      }
 
+      for (j = 0; j < something.taskList.length; j++) {
+
+        document.getElementById("tasks").innerHTML += `<span><input type="checkbox" name="chk"> ${something.taskList[j].task}<br/></span>`;
+        //if (something.taskList[j].isDone == true) { handleClick(this); }
+        obj.taskList.push(something.taskList[j]);
+      }
     }
 
     window.onload = loader;
+
+
+
   </script>
 </head>
 
-<body>
+<body class="bg-warning">
 
+  <div class="card">
+    <a href="javascript:history.back()"><button class="btn btn-primary btn-sm">Go Back </button></a>
+    <h1 class="">To do App</h1>
+    <div class="bg-info" id="tasks">
 
-  <button>Go Back </button>
-  <h1>To do App</h1>
-  <div id="tasks">
+    </div>
+    <br />
 
+    <input class="form-control" type="text" id="task">
+
+    <br />
+    <div class="btn-group btn">
+      <button class="btn btn-success btn-sm" onclick="addd(); save();">Add</button>
+      <button class="btn btn-danger btn-sm" onclick="rem(); save();">Remove Completed</button>
+    </div>
   </div>
-  <table id="myTable" rows="10">
-
-  </table>
-
-  <br />
-  <input type="text" id="task">
-  <br />
-  <button onclick="addd()">Add</button>
-  <button onclick="rem()">Remove</button>
-  <button onclick="save()">Save</button>
-  <button onclick="load()">Load</button>
 
 
 
 
   <script type="text/javascript">
-
-
     idCount = 0;
-
-    //var taskList =[];
     obj = { taskList: [] };
 
     function addd() {
       var tsk = document.getElementById("task").value;
-
+      var ele = document.getElementsByName("chk");
       if (tsk != 0) {
         var singleTask = {};
         singleTask['id'] = idCount;
@@ -67,7 +78,7 @@
         singleTask['isDone'] = false;
         obj.taskList.push(singleTask);
 
-        for (j = idCount; j < obj.taskList.length; j++) {
+        for (j = (ele.length); j < obj.taskList.length; j++) {
           document.getElementById("tasks").innerHTML += `<span><input type="checkbox" name="chk"> ${obj.taskList[j].task}<br/></span>`;
         }
         console.log(obj.taskList);
@@ -90,20 +101,10 @@
         }
       }
     }
-
-
     function save() {
       localStorage.setItem('obj', JSON.stringify(obj));
     }
-
-    function load() {
-      // var retrievedObject = localStorage.getItem('obj');
-      //console.log('retrievedObject: ', JSON.parse(retrievedObject));
-    }
-
   </script>
-
-
 </body>
 
 </html>
