@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <h1>To do App</h1>
+  <div id="tasks">
+
+  </div>
+  <table id="myTable" rows="10">
+
+  </table>
+
+  <br />
+  <input type="text" id="task">
+  <br />
+  <button onclick="addd()">Add</button>
+  <button onclick="rem()">Remove</button>
+  <button onclick="save()">Save</button>
+  <button onclick="load()">Load</button>
+
+
+
+
+  <script type="text/javascript">
+
+
+    idCount = 0;
+
+    //var taskList =[];
+    var obj = { taskList: [] };
+
+    function addd() {
+      var tsk = document.getElementById("task").value;
+
+      if (tsk != 0) {
+        var singleTask = {};
+        singleTask['id'] = idCount;
+        singleTask['task'] = tsk;
+        singleTask['isDone'] = false;
+        obj.taskList.push(singleTask);
+
+        for (j = idCount; j < obj.taskList.length; j++) {
+          document.getElementById("tasks").innerHTML += `<span><input type="checkbox" name="chk"> ${obj.taskList[j].task}<br/></span>`;
+        }
+        console.log(obj.taskList);
+        idCount++;
+        document.getElementById("task").value = null;
+      }
+      else {
+        alert("Please Enter a Valid Task");
+      }
+    }
+
+    function rem() {
+      var ele = document.getElementsByName("chk");
+      for (var k = 0; k < ele.length; k++) {
+        if (ele[k].checked == true) {
+          obj.taskList.splice(k, 1);
+          ele[k].parentNode.remove();
+          k--;
+          idCount--;
+        }
+      }
+    }
+
+
+    function save() {
+      var json = JSON.stringify(obj);
+      localStorage.setItem('obj', json);
+    }
+
+    function load() {
+      var retrievedObject = localStorage.getItem('obj');
+      console.log('retrievedObject: ', JSON.parse(retrievedObject));
+    }
+
+  </script>
+
+
+</body>
+
+</html>
